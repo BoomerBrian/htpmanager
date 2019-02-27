@@ -84,7 +84,7 @@ services:
     ports:
       - 8989:8989
     links:
-      - sabnzbd
+      - transmission
     restart: always
     environment:
       - PUID=${PUID}
