@@ -1,5 +1,24 @@
 version: '2'
 services:
+  #transmission - torrent client
+  transmission:
+    image: linuxserver/transmission
+    container_name: transmission
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=America/Chicago
+      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
+    volumes:
+      - /media/server/External/appdata/transmission/config:/config
+      - complete_downloads:/downloads
+      - watch:/watch
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    mem_limit: 4096m
+    restart: unless-stopped
   #heimdall - gateway, manager
   heimdall:
     image: linuxserver/heimdall
@@ -8,37 +27,6 @@ services:
       - /media/server/External/appdata/heimdall/config:/config
     ports:
       - 80:80
-    restart: always
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-  #sabnzbd - downloader
-  sabnzbd:
-    image: linuxserver/sabnzbd
-    container_name: sabnzbd
-    volumes:
-    #why does sabnzbd need access to comics?
-      - comics:/comics
-      - /media/server/External/appdata/sabnzbd/config:/config
-      - complete_downloads:/config/Downloads
-      - incomplete_downloads:/config/incomplete
-    ports:
-      - 8080:8080
-      - 9090:9090
-    restart: always
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=America/New_York
-  #nzbhydra - aggregates indxers
-  nzbhydra:
-    image: linuxserver/hydra
-    container_name: hydra
-    volumes:
-      - /media/server/External/appdata/hydra/config:/config
-      - complete_downloads:/downloads
-    ports:
-      - 5075:5075
     restart: always
     environment:
       - PUID=${PUID}
@@ -63,7 +51,7 @@ services:
       - VERSION=public
       - PUID=${PUID}
       - PGID=${PGID}
-      - TZ=America/New_York
+      - TZ=America/Chicago
   #tautulli - plex stats
   tautulli:
     image: linuxserver/tautulli
@@ -81,7 +69,7 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
-      - TZ=America/New_York
+      - TZ=America/Chicago
   #sonarr - tv downloader
   sonarr:
     image: linuxserver/sonarr
@@ -92,7 +80,7 @@ services:
       - /media/server/External/appdata/sonarr:/config
       - tv:/tv
       - complete_downloads:/config/Downloads
-#       - /media/server/External/media/tv_import:/tv_import
+    # - /media/server/External/media/tv_import:/tv_import
     ports:
       - 8989:8989
     links:
@@ -112,22 +100,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart:
       always
-  #lazylibrarian - book/comic manager
-  lazylibrarian:
-    image: linuxserver/lazylibrarian
-    container_name: lazylibrarian
-    ports:
-      - 5299:5299
-    volumes:
-      - /media/server/External/appdata/lazylibrarian:/config
-      - complete_downloads:/downloads
-      - books:/books
-    restart:
-      always
-    environment:
-      - TZ=America/New_York
-      - PUID=${PUID}
-      - PGID=${PGID}
   #watchtower - docker image updater
   watchtower:
     container_name: watchtower
@@ -135,7 +107,7 @@ services:
     image: v2tec/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-#    command: --schedule "0 0 4 * * *" --cleanup
+  # command: --schedule "0 0 4 * * *" --cleanup
   #netdata - metrics for apps
   netdata:
     image: netdata/netdata
@@ -149,49 +121,6 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-  #ubooquity - manages comics
-  ubooquity:
-    image: linuxserver/ubooquity
-    container_name: ubooquity
-    ports:
-    - 2202:2202
-    - 2203:2203
-    volumes:
-    - /media/server/External/appdata/ubooquity:/config
-    - complete_downloads:/files
-    - comics:/comics
-    restart:
-      always
-    environment:
-    - PUID=${PUID}
-    - PGID=${PGID}
-  #mylar - comic download
-  mylar:
-    image: linuxserver/mylar
-    container_name: mylar
-    ports:
-      - 8090:8090
-    volumes:
-      - /media/server/External/appdata/mylay:/config
-      - complete_downloads:/downloads
-      - comics:/comics
-    environment:
-    - PUID=${PUID}
-    - PGID=${PGID}
-    - TZ=America/New_York
-  headphones:
-    image: linuxserver/headphones
-    container_name: headphones
-    ports:
-    - 8182:8181
-    volumes:
-    - /media/server/External/appdata/headphones:/config
-    - complete_downloads:/downloads
-    - music:/music
-    environment:
-    - PUID=${PUID}
-    - PGID=${PGID}
-    - TZ=America/New_York
   couchpotato:
     image: linuxserver/couchpotato
     container_name: couchpotato
@@ -204,17 +133,11 @@ services:
     environment:
     - PUID=${PUID}
     - PGID=${PGID}
-    - TZ=America/New_York
-
+    - TZ=America/Chicago
 
 
 
 volumes:
-  comics:
-    driver_opts:
-      type: none
-      device: /media/server/External/comics
-      o: bind
   tv:
     driver_opts:
       type: none
@@ -245,20 +168,15 @@ volumes:
       type: none
       device: /media/server/External/christmas
       o: bind
-  music:
-    driver_opts:
-      type: none
-      device: /media/server/External/music
-      o: bind
-  books:
-    driver_opts:
-      type: none
-      device: /media/server/External/books
-      o: bind
   complete_downloads:
     driver_opts:
       type: none
       device: /media/server/External/complete
+      o: bind
+  watch:
+    driver_opts:
+      type: none
+      device: /media/server/External/watch
       o: bind
   incomplete_downloads:
     driver_opts:
@@ -270,19 +188,3 @@ volumes:
       type: none
       device: /media/server/External/tmp
       o: bind
-
-      
-#/media/server/External/appdata/heimdall/config:/config
-#/media/server/External/appdata/hydra/config:/config
-#/media/server/External/appdata/sabnzbd/config:/config
-#/media/server/External/appdata/plex:/config
-#/media/server/External/appdata/plexpy:/config
-#/media/server/External/appdata/plex/Library/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro
-#/media/server/External/appdata/sonarr:/config
-#/media/server/External/appdata/letsencrypt:/config
-#/media/server/External/appdata/portainer:/data
-#/media/server/External/appdata/lazylibrarian:/config
-#/media/server/External/appdata/ubooquity:/config
-#/media/server/External/appdata/autosub:/config
-  
-
