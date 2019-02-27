@@ -213,62 +213,62 @@ volumes:
   comics:
     driver_opts:
       type: none
-      device: /mnt/storage/media/comics
+      device: /media/server/External/comics
       o: bind
   tv:
     driver_opts:
       type: none
-      device: /mnt/storage/media/tv
+      device: /media/server/External/tv
       o: bind
   home_movies:
     driver_opts:
       type: none
-      device: /mnt/storage/media/homemovies
+      device: /media/server/External/homemovies
       o: bind
   photos:
     driver_opts:
       type: none
-      device: /mnt/storage/media/photos
+      device: /media/server/External/photos
       o: bind
   movies:
     driver_opts:
       type: none
-      device: /mnt/storage/media/movies
+      device: /media/server/External/movies
       o: bind
   kids_movies:
     driver_opts:
       type: none
-      device: /mnt/storage/media/kids
+      device: /media/server/External/kids
       o: bind
   christmas_movies:
     driver_opts:
       type: none
-      device: /mnt/storage/media/christmas
+      device: /media/server/External/christmas
       o: bind
   music:
     driver_opts:
       type: none
-      device: /mnt/storage/media/music
+      device: /media/server/External/music
       o: bind
   books:
     driver_opts:
       type: none
-      device: /mnt/storage/media/books
+      device: /media/server/External/books
       o: bind
   complete_downloads:
     driver_opts:
       type: none
-      device: /mnt/storage/downloads/complete
+      device: /media/server/External/complete
       o: bind
   incomplete_downloads:
     driver_opts:
       type: none
-      device: /mnt/storage/downloads/incomplete
+      device: /media/server/External/incomplete
       o: bind
   temp_storage:
     driver_opts:
       type: none
-      device: /mnt/storage/tmp
+      device: /media/server/External/tmp
       o: bind
 
       
