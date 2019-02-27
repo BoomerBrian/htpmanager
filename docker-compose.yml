@@ -75,7 +75,7 @@ services:
     image: linuxserver/sonarr
     container_name: sonarr
     depends_on:
-      - sabnzbd
+      - transmission
     volumes:
       - /media/server/External/appdata/sonarr:/config
       - tv:/tv
