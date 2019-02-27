@@ -43,7 +43,6 @@ services:
       - movies:/data/movies
       - christmas_movies:/data/christmas
       - kids_movies:/data/kids
-      - music:/data/music
       - temp_storage:/transcode
     network_mode: host
     restart: always
