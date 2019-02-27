@@ -5,7 +5,7 @@ services:
     image: linuxserver/heimdall
     container_name: heimdall
     volumes:
-      - /mnt/storage/appdata/heimdall/config:/config
+      - /media/server/External/appdata/heimdall/config:/config
     ports:
       - 80:80
     restart: always
@@ -19,7 +19,7 @@ services:
     volumes:
     #why does sabnzbd need access to comics?
       - comics:/comics
-      - /mnt/storage/appdata/sabnzbd/config:/config
+      - /media/server/External/appdata/sabnzbd/config:/config
       - complete_downloads:/config/Downloads
       - incomplete_downloads:/config/incomplete
     ports:
@@ -35,7 +35,7 @@ services:
     image: linuxserver/hydra
     container_name: hydra
     volumes:
-      - /mnt/storage/appdata/hydra/config:/config
+      - /media/server/External/appdata/hydra/config:/config
       - complete_downloads:/downloads
     ports:
       - 5075:5075
@@ -48,7 +48,7 @@ services:
     image: linuxserver/plex
     container_name: plex
     volumes:
-      - /mnt/storage/appdata/plex:/config
+      - /media/server/External/appdata/plex:/config
       - tv:/data/tvshows
       - home_movies:/data/homemovies
       - photos:/data/photos
@@ -71,8 +71,8 @@ services:
     depends_on:
       - plex
     volumes:
-      - /mnt/storage/appdata/plexpy:/config
-      - /mnt/storage/appdata/plex/Library/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro
+      - /media/server/External/appdata/plexpy:/config
+      - /media/server/External/appdata/plex/Library/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro
     ports:
       - 8181:8181
     links:
@@ -89,10 +89,10 @@ services:
     depends_on:
       - sabnzbd
     volumes:
-      - /mnt/storage/appdata/sonarr:/config
+      - /media/server/External/appdata/sonarr:/config
       - tv:/tv
       - complete_downloads:/config/Downloads
-#       - /mnt/storage/media/tv_import:/tv_import
+#       - /media/server/External/media/tv_import:/tv_import
     ports:
       - 8989:8989
     links:
@@ -108,7 +108,7 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - /mnt/storage/appdata/portainer:/data
+      - /media/server/External/appdata/portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock
     restart:
       always
@@ -119,7 +119,7 @@ services:
     ports:
       - 5299:5299
     volumes:
-      - /mnt/storage/appdata/lazylibrarian:/config
+      - /media/server/External/appdata/lazylibrarian:/config
       - complete_downloads:/downloads
       - books:/books
     restart:
@@ -157,7 +157,7 @@ services:
     - 2202:2202
     - 2203:2203
     volumes:
-    - /mnt/storage/appdata/ubooquity:/config
+    - /media/server/External/appdata/ubooquity:/config
     - complete_downloads:/files
     - comics:/comics
     restart:
@@ -172,7 +172,7 @@ services:
     ports:
       - 8090:8090
     volumes:
-      - /mnt/storage/appdata/mylay:/config
+      - /media/server/External/appdata/mylay:/config
       - complete_downloads:/downloads
       - comics:/comics
     environment:
@@ -185,7 +185,7 @@ services:
     ports:
     - 8182:8181
     volumes:
-    - /mnt/storage/appdata/headphones:/config
+    - /media/server/External/appdata/headphones:/config
     - complete_downloads:/downloads
     - music:/music
     environment:
@@ -198,7 +198,7 @@ services:
     ports:
     - 5050:5050
     volumes:
-    - /mnt/storage/appdata/couchpotato:/config
+    - /media/server/External/appdata/couchpotato:/config
     - complete_downloads:/downloads
     - movies:/movies
     environment:
@@ -272,17 +272,17 @@ volumes:
       o: bind
 
       
-#/mnt/storage/appdata/heimdall/config:/config
-#/mnt/storage/appdata/hydra/config:/config
-#/mnt/storage/appdata/sabnzbd/config:/config
-#/mnt/storage/appdata/plex:/config
-#/mnt/storage/appdata/plexpy:/config
-#/mnt/storage/appdata/plex/Library/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro
-#/mnt/storage/appdata/sonarr:/config
-#/mnt/storage/appdata/letsencrypt:/config
-#/mnt/storage/appdata/portainer:/data
-#/mnt/storage/appdata/lazylibrarian:/config
-#/mnt/storage/appdata/ubooquity:/config
-#/mnt/storage/appdata/autosub:/config
+#/media/server/External/appdata/heimdall/config:/config
+#/media/server/External/appdata/hydra/config:/config
+#/media/server/External/appdata/sabnzbd/config:/config
+#/media/server/External/appdata/plex:/config
+#/media/server/External/appdata/plexpy:/config
+#/media/server/External/appdata/plex/Library/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro
+#/media/server/External/appdata/sonarr:/config
+#/media/server/External/appdata/letsencrypt:/config
+#/media/server/External/appdata/portainer:/data
+#/media/server/External/appdata/lazylibrarian:/config
+#/media/server/External/appdata/ubooquity:/config
+#/media/server/External/appdata/autosub:/config
   
 
