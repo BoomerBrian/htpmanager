@@ -5,8 +5,8 @@ services:
     image: linuxserver/transmission
     container_name: transmission
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - PUID=1000
+      - PGID=1001
       - TZ=America/Chicago
       - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
     volumes:
@@ -19,6 +19,7 @@ services:
       - 51413:51413/udp
     mem_limit: 4096m
     restart: unless-stopped
+  #couchpotato - tv shows
   couchpotato:
     image: linuxserver/couchpotato
     container_name: couchpotato
@@ -30,8 +31,8 @@ services:
     - watch:/watch # where transmission watches for torrent files
     - movies:/movies
     environment:
-    - PUID=${PUID}
-    - PGID=${PGID}
+    - PUID=1000
+    - PGID=1001
     - TZ=America/Chicago
   #heimdall - gateway, manager
   heimdall:
@@ -43,8 +44,8 @@ services:
       - 80:80
     restart: always
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - PUID=1000
+      - PGID=1001
   #plex - media server
   plex:
     image: linuxserver/plex
@@ -80,8 +81,8 @@ services:
       - plex
     restart: always
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - PUID=1000
+      - PGID=1001
       - TZ=America/Chicago
   #sonarr - tv downloader
   sonarr:
@@ -100,8 +101,24 @@ services:
       - transmission
     restart: always
     environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - PUID=1000
+      - PGID=1001
+  #jackett - proxy for sonarr
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1001
+      - TZ=America/Chicago
+      #- RUN_OPTS=<run options here> #optional
+    volumes:
+      - /media/server/External/appdata/jackett:/config
+      - complete_downloads:/downloads
+    ports:
+      - 9117:9117
+    mem_limit: 4096m
+    restart: unless-stopped
   #portainer - docker manager
   portainer:
     image: portainer/portainer
