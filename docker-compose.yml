@@ -19,6 +19,20 @@ services:
       - 51413:51413/udp
     mem_limit: 4096m
     restart: unless-stopped
+  couchpotato:
+    image: linuxserver/couchpotato
+    container_name: couchpotato
+    ports:
+    - 5050:5050
+    volumes:
+    - /media/server/External/appdata/couchpotato:/config
+    - complete_downloads:/downloads
+    - watch:/watch # where transmission watches for torrent files
+    - movies:/movies
+    environment:
+    - PUID=${PUID}
+    - PGID=${PGID}
+    - TZ=America/Chicago
   #heimdall - gateway, manager
   heimdall:
     image: linuxserver/heimdall
@@ -120,19 +134,7 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
-  couchpotato:
-    image: linuxserver/couchpotato
-    container_name: couchpotato
-    ports:
-    - 5050:5050
-    volumes:
-    - /media/server/External/appdata/couchpotato:/config
-    - complete_downloads:/downloads
-    - movies:/movies
-    environment:
-    - PUID=${PUID}
-    - PGID=${PGID}
-    - TZ=America/Chicago
+  
 
 
 
