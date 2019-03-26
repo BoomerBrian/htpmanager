@@ -1,25 +1,41 @@
 version: '2'
 services:
-  #transmission - torrent client
-  transmission:
-    image: linuxserver/transmission
-    container_name: transmission
+  #deluge - torrent client
+  deluge:
+    image: linuxserver/deluge
+    container_name: deluge
+    network_mode: host
     environment:
       - PUID=1000
-      - PGID=1001
+      - PGID=1000
+      - UMASK_SET=<022>
       - TZ=America/Chicago
-      - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
     volumes:
-      - /media/server/External/appdata/transmission/config:/config
+      - /media/server/External/appdata/deluge/config:/config
       - complete_downloads:/downloads
-      - watch:/watch
-    ports:
-      - 9091:9091
-      - 51413:51413
-      - 51413:51413/udp
-    mem_limit: 4096m
     restart: unless-stopped
+
+  #transmission - torrent client
+  # transmission:
+  #   image: linuxserver/transmission
+  #   container_name: transmission
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1001
+  #     - TZ=America/Chicago
+  #     - TRANSMISSION_WEB_HOME=/combustion-release/ #optional
+  #   volumes:
+  #     - /media/server/External/appdata/transmission/config:/config
+  #     - complete_downloads:/downloads
+  #     - watch:/watch
+  #   ports:
+  #     - 9091:9091
+  #     - 51413:51413
+  #     - 51413:51413/udp
+  #   mem_limit: 4096m
+  #   restart: unless-stopped
   #couchpotato - tv shows
+
   couchpotato:
     image: linuxserver/couchpotato
     container_name: couchpotato
@@ -34,6 +50,7 @@ services:
     - PUID=1000
     - PGID=1001
     - TZ=America/Chicago
+
   #heimdall - gateway, manager
   heimdall:
     image: linuxserver/heimdall
@@ -46,6 +63,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1001
+
   #plex - media server
   plex:
     image: linuxserver/plex
@@ -63,9 +81,10 @@ services:
     restart: always
     environment:
       - VERSION=public
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - PUID=1000
+      - PGID=1001
       - TZ=America/Chicago
+
   #tautulli - plex stats
   tautulli:
     image: linuxserver/tautulli
@@ -84,6 +103,7 @@ services:
       - PUID=1000
       - PGID=1001
       - TZ=America/Chicago
+
   #sonarr - tv downloader
   sonarr:
     image: linuxserver/sonarr
@@ -103,6 +123,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1001
+
   #jackett - proxy for sonarr
   jackett:
     image: linuxserver/jackett
@@ -119,6 +140,7 @@ services:
       - 9117:9117
     mem_limit: 4096m
     restart: unless-stopped
+
   #portainer - docker manager
   portainer:
     image: portainer/portainer
@@ -130,6 +152,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart:
       always
+
   #watchtower - docker image updater
   watchtower:
     container_name: watchtower
@@ -138,6 +161,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
   # command: --schedule "0 0 4 * * *" --cleanup
+
   #netdata - metrics for apps
   netdata:
     image: netdata/netdata
@@ -152,9 +176,7 @@ services:
       - /sys:/host/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
   
-
-
-
+  
 volumes:
   tv:
     driver_opts:
