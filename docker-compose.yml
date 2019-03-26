@@ -109,7 +109,7 @@ services:
     image: linuxserver/sonarr
     container_name: sonarr
     depends_on:
-      - transmission
+      - deluge
     volumes:
       - /media/server/External/appdata/sonarr:/config
       - tv:/tv
@@ -118,7 +118,7 @@ services:
     ports:
       - 8989:8989
     links:
-      - transmission
+      - deluge
     restart: always
     environment:
       - PUID=1000
@@ -176,7 +176,7 @@ services:
       - /sys:/host/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
   
-  
+
 volumes:
   tv:
     driver_opts:
