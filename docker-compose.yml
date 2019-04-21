@@ -7,7 +7,7 @@ services:
     network_mode: host
     environment:
       - PUID=1000
-      - PGID=1000
+      - PGID=1001
       - UMASK_SET=<022>
       - TZ=America/Chicago
     volumes:
